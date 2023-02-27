@@ -1,0 +1,9 @@
+{% extends './base.html' %}
+{% block title %}Блог{% endblock title %}
+
+{% block content %}
+    {% for post in object_list %}
+        {% include './post_variants/shortende_post.html' %}
+    {% endfor %}
+
+{% endblock content %}

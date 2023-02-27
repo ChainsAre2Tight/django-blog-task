@@ -1,0 +1,12 @@
+{% extends './block/post_container.html' %}
+
+{% block post_body %}
+    <div class="card-body text-white">
+        <h2>{{ post.title }}</h2>
+        <p>Автор поста: <b>{{ post.author }}</b></p>
+        <p>{{ post.body }}</p>
+        <a href="{% url 'post_detail' post.pk %}">
+            <button type="button" class="btn btn-primary">Подробнее</button>
+        </a>
+    </div>
+{% endblock post_body %}
