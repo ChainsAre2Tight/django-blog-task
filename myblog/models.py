@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.text import slugify
+from transliterate import translit
 
 
 # Create your models here.
@@ -7,6 +9,13 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(max_length=50)
     about = models.TextField()
+    divided = models.BooleanField()
+    img_url = models.CharField(max_length=300, blank=True)
+    slug = models.SlugField(null=True, max_length=40, unique=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(translit(self.name, 'ru', reversed=True))
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -19,7 +28,7 @@ class Post(models.Model):
         on_delete=models.CASCADE,
     )
     body = models.TextField()
-    img_url = models.CharField(max_length=300, default='https://palchevsky.ru/images/blogpost.png')
+    img_url = models.CharField(max_length=300, blank=True)
     category = models.ManyToManyField(Category)
 
     def __str__(self):

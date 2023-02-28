@@ -1,9 +1,10 @@
 {% extends './base.html' %}
 
 {% block title %}
-    {{ category }} | Информация
+    {{ category.name }} | Информация
 {% endblock title %}
 
 {% block content %}
     {% include './post_variants/about_category.html' %}
+    {% include './block/link_footer.html' with link='./' name='Назад'%}
 {% endblock content %}

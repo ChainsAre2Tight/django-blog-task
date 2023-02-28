@@ -1,11 +1,18 @@
 {% extends './block/post_container.html' %}
-
+{% load static %}
 {% block post_body %}
 
     <h2>{{ post.title }}</h2>
     <p>Автор поста: <b>{{ post.author }}</b></p>
-    <p>{{ post.body }}</p>
-    <img src="{{ post.img_url }}" alt="{{ post.title }}"
-         width="100%" height="100%">
 
+    <p>Категории поста:
+        {% for object in post.category.all %}
+            <a href="/category/{{ object.slug }}"><b>{{ object.name }}</b></a>
+        {% endfor %}
+    </p>
+
+    <p style="text-indent: 30px">{{ post.body|linebreaks }}</p>
+    <div class="position-relative text-center">
+        <img src="{{ post.img_url }}" alt="{{ post.title }}" class="img-responsive">
+    </div>
 {% endblock post_body %}

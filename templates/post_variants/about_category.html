@@ -5,6 +5,6 @@
     <h2>{{ category.name }}</h2>
     <p>{{ category.about }}</p>
 
-    {% include '../block/link_footer.html' with link='./' name='Назад'%}
+    <img src="{{ category.img_url }}" alt="Картинка_{{ category.name }}" width="100%" height="100%">
 
 {% endblock post_body %}
