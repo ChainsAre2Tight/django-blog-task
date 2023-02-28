@@ -1,0 +1,10 @@
+{% extends './block/post_container.html' %}
+
+{% block post_body %}
+
+    <h2>{{ category.name }}</h2>
+    <p>{{ category.about }}</p>
+
+    {% include '../block/link_footer.html' with link='./' name='Назад'%}
+
+{% endblock post_body %}

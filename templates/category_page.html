@@ -1,9 +1,13 @@
 {% extends './base.html' %}
-{% block title %}Блог{% endblock title %}
+{% block title %}
+    Блог | {{ category }}
+{% endblock title %}
 
 {% block content %}
+
     {% for post in object_list %}
         {% include './post_variants/shortended_post.html' %}
     {% endfor %}
 
+    {% include './block/link_footer.html' with link='./about' name='Подробнее о категории'%}
 {% endblock content %}
