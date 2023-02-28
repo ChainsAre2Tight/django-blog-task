@@ -7,7 +7,7 @@
 
     <p>Категории поста:
         {% for object in post.category.all %}
-            <a href="/category/{{ object.slug }}"><b>{{ object.name }}</b></a>
+            <a class="link-secondary" href="/category/{{ object.slug }}"><b>{{ object.name }}</b></a>
         {% endfor %}
     </p>
 
