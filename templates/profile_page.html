@@ -1,0 +1,29 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block title %}
+    Блог | Профиль
+{% endblock title %}
+
+
+
+{% block content %}
+    <div style="margin-top: 1%">
+        <div class="container-fluid">
+            <div class="row align-items-start">
+                <div class="col">
+                    <div class="bg-image card shadow-1-strong"
+                         style="background: rgb(131,58,180); background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); margin-right: auto; margin-left: auto; width: 50%">
+                        <div class="card-body text-white">
+                            <p>Логин: {{ user }}</p>
+                            <p>Дата последнего входа: {{ user.last_login }}</p>
+                            <div class="position-relative text-center">
+                                <img class="img-responsive" src="{% static 'img/profile-photo.jpg' %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

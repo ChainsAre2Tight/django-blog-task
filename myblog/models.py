@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from transliterate import translit
+from datetime import datetime
 
 
 # Create your models here.

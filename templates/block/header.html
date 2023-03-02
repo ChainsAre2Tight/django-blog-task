@@ -2,6 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Блог Унитаза</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Переключатель навигации">
@@ -37,6 +38,22 @@
                         </ul>
                     </li>
                 </ul>
+            </div>
+            <div style="margin-right: 5%">
+                <a class="navbar-brand">
+                    {% if request.user.is_authenticated %}
+                        Вы вошли как
+                        <a href="/profile/{{ request.user.id }}/">
+                            {{ request.user.get_username }}
+                        </a>
+                        |
+                        <a href="/logout">
+                            Выйти
+                        </a>
+                    {% else %}
+                        <a href="/login">Войдите</a> или <a href="/register">Зарегистрируйтесь</a>
+                    {% endif %}
+                </a>
             </div>
 
             <form class="d-flex" action="/">

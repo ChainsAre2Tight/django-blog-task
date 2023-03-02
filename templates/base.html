@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <meta name="viewport" content="width-device-width, initial-scale=1">
 </head>
-<body style="padding-top: 50px">
+<body style="padding-top: 60px; height: 100vh; width: 100%; background: rgb(73,118,195);
+background: linear-gradient(90deg, rgba(73,118,195,1) 5%, rgba(29,29,176,1) 25%, rgba(33,30,176,1) 58%, rgba(180,78,171,1) 100%); ">
 {% include './block/header.html' %}
+
 {% block content %}
 
 {% endblock content %}

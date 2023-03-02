@@ -1,0 +1,24 @@
+{% extends './base.html' %}
+
+{% block title %}
+    Блог | Регистрация
+{% endblock title %}
+
+{% block content %}
+
+    <!--Register-->
+    <div class="container py-5">
+        <h1>Register</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ register_form }}
+            <button class="btn btn-primary" type="submit">Регистрация</button>
+        </form>
+        <div class="container-fluid" style="padding-top: 5%">
+            <div class="bg-image card shadow-1-strong" style="padding-top: 1%">
+                <p class="text-center">Если у вас уже есть аккаунт, <a href="/login">войдите</a>.</p>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock content %}

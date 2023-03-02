@@ -1,7 +1,13 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, FormView
 from .models import Post, Category
 from django.db.models import Q
+from .forms import NewUserForm
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -74,5 +80,53 @@ class CategoryView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
         context['category'] = Category.objects.filter(slug=self.kwargs['slug'])[0]
+        add_header_to_context(context)
+        return context
+
+
+def register_request(request):
+    if request.method == "POST":
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful.")
+            return redirect("/")
+        messages.error(request, "Unsuccessful registration. Invalid information.")
+    form = NewUserForm()
+    return render(request=request, template_name="register_page.html", context={"register_form": form})
+
+
+def login_request(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"Вы вошли как {username}.")
+                return redirect("/")
+            else:
+                messages.error(request, "Неправильное имя пользователя или пароль")
+        else:
+            messages.error(request, "Неправильное имя пользователя или пароль")
+    form = AuthenticationForm()
+    return render(request=request, template_name="login_page.html", context={"login_form": form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
+
+
+class ProfileView(DetailView):
+    model = User
+    template_name = 'profile_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        context['active_tab_name'] = 'detailed_post_page'
         add_header_to_context(context)
         return context

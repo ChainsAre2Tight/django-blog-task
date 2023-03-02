@@ -3,7 +3,7 @@
 {% block post_body %}
 
     <h2>{{ post.title }}</h2>
-    <p>Автор поста: <b>{{ post.author }}</b></p>
+    <p>Автор поста: <a class="link-secondary" href="/profile/{{ post.author.id }}"><b>{{ post.author }}</b></a></p>
 
     <p>Категории поста:
         {% for object in post.category.all %}
