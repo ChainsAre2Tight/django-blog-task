@@ -48,10 +48,6 @@ class BlogListView(ListView):
     def get_queryset(self):
         if self.request.GET.get('ppp') is not None:
             self.request.session['ppp'] = self.request.GET.get('ppp')
-        try:
-            ppp = self.request.session['ppp']
-        except KeyError:
-            self.request.session['ppp'] = default_ppp
         if self.request.GET.get('q') is not None:
             query = self.request.GET.get("q")
             objects = Post.objects.filter(
@@ -86,15 +82,26 @@ class AboutCategoryView(DetailView):
 class CategoryView(ListView):
     model = Post
     template_name = 'category_page.html'
+    paginate_by = default_ppp
 
     def get_queryset(self):
+        if self.request.GET.get('ppp') is not None:
+            self.request.session['ppp'] = self.request.GET.get('ppp')
         categories = Category.objects.filter(slug=self.kwargs['slug'])[0]
         return Post.objects.filter(category=categories)
+
+    def get_paginate_by(self, *args, **kwargs):
+        try:
+            return self.request.session['ppp']
+        except KeyError:
+            return super().get_paginate_by(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
         context['category'] = Category.objects.filter(slug=self.kwargs['slug'])[0]
         add_header_to_context(context)
+        context['ppp_list'] = PPP_list
+        context['current_ppp'] = int(self.request.session['ppp'])
         return context
 
 
