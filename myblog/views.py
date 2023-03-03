@@ -17,7 +17,7 @@ default_ppp = 5
 
 class BlogDetailView(DetailView):
     model = Post
-    template_name = 'post_detail.html'
+    template_name = 'detail_pages/post_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
@@ -28,7 +28,7 @@ class BlogDetailView(DetailView):
 
 class BlogListView(ListView):
     model = Post
-    template_name = 'home.html'
+    template_name = 'list_pages/home.html'
     paginate_by = default_ppp
 
     def get_context_data(self, **kwargs):
@@ -62,7 +62,7 @@ class BlogListView(ListView):
 
 
 class AboutPageView(TemplateView):
-    template_name = 'about.html'
+    template_name = 'detail_pages/about.html'
 
     def get_context_data(self, **kwargs):
         context = super(TemplateView, self).get_context_data(**kwargs)
@@ -72,7 +72,7 @@ class AboutPageView(TemplateView):
 
 
 class AboutCategoryView(DetailView):
-    template_name = 'about_category_page.html'
+    template_name = 'detail_pages/about_category_page.html'
     model = Category
 
     def get_context_data(self, **kwargs):
@@ -84,7 +84,7 @@ class AboutCategoryView(DetailView):
 
 class CategoryView(ListView):
     model = Post
-    template_name = 'category_page.html'
+    template_name = 'list_pages/category_page.html'
     paginate_by = default_ppp
 
     def get_queryset(self):
@@ -122,7 +122,7 @@ def register_request(request):
             return redirect("/")
         messages.error(request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
-    return render(request=request, template_name="register_page.html", context={"register_form": form})
+    return render(request=request, template_name="user_interface/register_page.html", context={"register_form": form})
 
 
 def login_request(request):
@@ -141,7 +141,7 @@ def login_request(request):
         else:
             messages.error(request, "Неправильное имя пользователя или пароль")
     form = AuthenticationForm()
-    return render(request=request, template_name="login_page.html", context={"login_form": form})
+    return render(request=request, template_name="user_interface/login_page.html", context={"login_form": form})
 
 
 def logout_view(request):
@@ -159,7 +159,7 @@ def profile_redirect(request):
 
 class ProfileView(DetailView):
     model = User
-    template_name = 'profile_page.html'
+    template_name = 'user_interface/profile_page.html'
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
@@ -170,7 +170,7 @@ class ProfileView(DetailView):
 
 class CategoryListView(ListView):
     model = Category
-    template_name = 'category_list_page.html'
+    template_name = 'list_pages/category_list_page.html'
     paginate_by = default_ppp
 
     def get_context_data(self, **kwargs):
