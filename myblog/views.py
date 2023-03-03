@@ -166,3 +166,31 @@ class ProfileView(DetailView):
         context['active_tab_name'] = 'detailed_post_page'
         add_header_to_context(context)
         return context
+
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'category_list_page.html'
+    paginate_by = default_ppp
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        context['active_tab_name'] = 'category_list'
+        add_header_to_context(context)
+        context['ppp_list'] = PPP_list
+        try:
+            context['current_ppp'] = int(self.request.session['ppp'])
+        except KeyError:
+            context['current_ppp'] = default_ppp
+        return context
+
+    def get_paginate_by(self, *args, **kwargs):
+        try:
+            return self.request.session['ppp']
+        except KeyError:
+            return super().get_paginate_by(*args, **kwargs)
+
+    def get_queryset(self):
+        if self.request.GET.get('ppp') is not None:
+            self.request.session['ppp'] = self.request.GET.get('ppp')
+        return Category.objects.all()

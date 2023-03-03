@@ -24,6 +24,12 @@
                             Разделы блога
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="/category/">Все категории</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             {% for object in category_list_undivided %}
                                 <li><a class="dropdown-item" href="/category/{{ object.slug }}">{{ object.name }}</a>
                                 </li>

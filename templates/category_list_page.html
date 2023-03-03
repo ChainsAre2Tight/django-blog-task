@@ -1,0 +1,13 @@
+{% extends './base.html' %}
+{% block title %}Блог | Категории{% endblock title %}
+
+{% block content %}
+    {% if paginator.count > 0 %}
+        {% for category in object_list %}
+            {% include './post_variants/about_category_shortened.html' %}
+        {% endfor %}
+        {% include './block/paginator.html' %}
+    {% else %}
+        {% include './post_variants/empty_query_post.html' %}
+    {% endif %}
+{% endblock content %}
