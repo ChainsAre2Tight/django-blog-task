@@ -38,29 +38,30 @@
                         </ul>
                     </li>
                 </ul>
-            </div>
-            <div style="margin-right: 5%">
-                <a class="navbar-brand">
-                    {% if request.user.is_authenticated %}
-                        Вы вошли как
-                        <a href="/profile/{{ request.user.id }}/">
-                            {{ request.user.get_username }}
-                        </a>
-                        |
-                        <a href="/logout">
-                            Выйти
-                        </a>
-                    {% else %}
-                        <a href="/login">Войдите</a> или <a href="/register">Зарегистрируйтесь</a>
-                    {% endif %}
-                </a>
-            </div>
 
-            <form class="d-flex" action="/">
-                <input class="form-control me-2" type="search" placeholder="Введите запрос" aria-label="Search"
-                       name="q">
-                <button class="btn btn-outline-success" type="submit">Найти</button>
-            </form>
+                <div style="margin-right: 1%">
+                    <span class="navbar-brand">
+                        {% if request.user.is_authenticated %}
+                            Вы вошли как:
+                            <a href="/profile/{{ request.user.id }}/">
+                                {{ request.user.get_username }}
+                            </a>
+                            |
+                            <a href="/logout">
+                                Выйти
+                            </a>
+                        {% else %}
+                            <a href="/login">Войдите</a> или <a href="/register">Зарегистрируйтесь</a>
+                        {% endif %}
+                    </span>
+                </div>
+
+                <form class="d-flex" action="/">
+                    <input class="form-control me-2" type="search" placeholder="Введите запрос" aria-label="Search"
+                           name="q">
+                    <button class="btn btn-outline-success" type="submit">Найти</button>
+                </form>
+            </div>
         </div>
     </nav>
 </header>
