@@ -6,12 +6,12 @@
 {% block content %}
 {% if paginator.count > 0 %}
     {% for post in object_list %}
-        {% include './containers/posts/shortended_post.html' %}
+        {% include '../containers/posts/shortended_post.html' %}
     {% endfor %}
-    {% include './block/paginator.html' %}
+    {% include '../block/paginator.html' %}
 {% else %}
-    {% include './containers/mix/containers/category/empty_category_post.html' %}
+    {% include '../containers/category/empty_category_post.html' %}
 {% endif %}
 
-    {% include './block/link_footer.html' with link='./about' name='Подробнее о категории'%}
+    {% include '../block/link_footer.html' with link='./about' name='Подробнее о категории'%}
 {% endblock content %}
