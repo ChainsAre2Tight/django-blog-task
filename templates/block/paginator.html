@@ -8,6 +8,7 @@
                     </a>
                 </li>
             </span>
+
             {% if page_obj.has_previous %}
                 <li class="page-item">
                     <a class="page-link" href="?page=1" aria-label="Previous">
@@ -37,6 +38,7 @@
                     </a>
                 </li>
             {% endif %}
+
             <li>
                 <form id="show-on-page" method="get">
                     <select style="margin-left: 7%" class="form-select" form="show-on-page"
@@ -53,6 +55,7 @@
                     </select>
                 </form>
             </li>
+
         </ul>
 
     </div>
