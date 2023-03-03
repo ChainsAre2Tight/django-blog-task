@@ -1,0 +1,61 @@
+<nav aria-label="Page navigation">
+    <div class="justify-content-center" style="margin-top: 3%">
+        <ul class="pagination justify-content-center">
+            <span style="margin-right: 1%">
+                <li class="page-item">
+                    <a class="page-link disabled">
+                        Всего постов: {{ paginator.count }}
+                    </a>
+                </li>
+            </span>
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Первая</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if page_obj.paginator.page_range|length > 1 %}
+                {% for n in page_obj.paginator.page_range %}
+                    {% if page_obj.number == n %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ n }}<span class="sr-only"></span></span>
+                        </li>
+                    {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+                        <span class="sr-only">Последняя</span>
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            <li>
+                <form id="show-on-page" method="get">
+                    <select style="margin-left: 7%" class="form-select" form="show-on-page"
+                            onchange="this.form.submit()" name="ppp">
+                        {% for n in ppp_list %}
+                            <option
+                                    {% if n == current_ppp %}
+                                        selected="selected"
+                                    {% endif %}
+                                    value="{{ n }}">
+                                {{ n }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, TemplateView, FormView
+from django.views.generic import ListView, DetailView, TemplateView
 from .models import Post, Category
 from django.db.models import Q
 from .forms import NewUserForm
@@ -9,12 +9,10 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
+from .view_functions import add_header_to_context
 
-# Create your views here.
-def add_header_to_context(context):
-    context['category_list_undivided'] = Category.objects.filter(divided=False)
-    context['category_list_divided'] = Category.objects.filter(divided=True)
-    return context
+PPP_list = [1, 2, 5, 10]
+default_ppp = 5
 
 
 class BlogDetailView(DetailView):
@@ -31,19 +29,35 @@ class BlogDetailView(DetailView):
 class BlogListView(ListView):
     model = Post
     template_name = 'home.html'
+    paginate_by = default_ppp
 
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
         context['active_tab_name'] = 'home_page'
         add_header_to_context(context)
+        context['ppp_list'] = PPP_list
+        context['current_ppp'] = int(self.request.session['ppp'])
         return context
 
+    def get_paginate_by(self, *args, **kwargs):
+        try:
+            return self.request.session['ppp']
+        except KeyError:
+            return super().get_paginate_by(*args, **kwargs)
+
     def get_queryset(self):
+        if self.request.GET.get('ppp') is not None:
+            self.request.session['ppp'] = self.request.GET.get('ppp')
+        try:
+            ppp = self.request.session['ppp']
+        except KeyError:
+            self.request.session['ppp'] = default_ppp
         if self.request.GET.get('q') is not None:
             query = self.request.GET.get("q")
-            return Post.objects.filter(
+            objects = Post.objects.filter(
                 Q(title__icontains=query) | Q(body__icontains=query)
-            )
+            ).order_by('id')
+            return objects
         else:
             return Post.objects.all()
 

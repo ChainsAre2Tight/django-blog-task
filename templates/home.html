@@ -2,8 +2,12 @@
 {% block title %}Блог{% endblock title %}
 
 {% block content %}
-    {% for post in object_list %}
-        {% include './post_variants/shortended_post.html' %}
-    {% endfor %}
-
+    {% if paginator.count > 0 %}
+        {% for post in object_list %}
+            {% include './post_variants/shortended_post.html' %}
+        {% endfor %}
+        {% include './block/paginator.html' %}
+    {% else %}
+        {% include './post_variants/empty_query_post.html' %}
+    {% endif %}
 {% endblock content %}
