@@ -1,0 +1,10 @@
+{% extends '../base.html' %}
+
+{% block title %}
+    {{ category.name }} | Информация
+{% endblock title %}
+
+{% block content %}
+    {% include '../containers/category/about_category_detailed.html' %}
+    {% include '../block/link_footer.html' with link='./' name='Назад'%}
+{% endblock content %}

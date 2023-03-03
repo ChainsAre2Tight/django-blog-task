@@ -1,4 +1,4 @@
-{% extends './base.html' %}
+{% extends '../base.html' %}
 {% block title %}
     Блог | {{ category }}
 {% endblock title %}
@@ -6,11 +6,11 @@
 {% block content %}
 {% if paginator.count > 0 %}
     {% for post in object_list %}
-        {% include './post_variants/shortended_post.html' %}
+        {% include './containers/posts/shortended_post.html' %}
     {% endfor %}
     {% include './block/paginator.html' %}
 {% else %}
-    {% include './post_variants/empty_category_post.html' %}
+    {% include './containers/mix/containers/category/empty_category_post.html' %}
 {% endif %}
 
     {% include './block/link_footer.html' with link='./about' name='Подробнее о категории'%}
