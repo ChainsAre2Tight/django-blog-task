@@ -36,7 +36,10 @@ class BlogListView(ListView):
         context['active_tab_name'] = 'home_page'
         add_header_to_context(context)
         context['ppp_list'] = PPP_list
-        context['current_ppp'] = int(self.request.session['ppp'])
+        try:
+            context['current_ppp'] = int(self.request.session['ppp'])
+        except KeyError:
+            context['current_ppp'] = default_ppp
         return context
 
     def get_paginate_by(self, *args, **kwargs):
@@ -101,7 +104,11 @@ class CategoryView(ListView):
         context['category'] = Category.objects.filter(slug=self.kwargs['slug'])[0]
         add_header_to_context(context)
         context['ppp_list'] = PPP_list
-        context['current_ppp'] = int(self.request.session['ppp'])
+        try:
+            context['current_ppp'] = int(self.request.session['ppp'])
+        except KeyError:
+            context['current_ppp'] = default_ppp
+
         return context
 
 
@@ -140,6 +147,14 @@ def login_request(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+
+def profile_redirect(request):
+    if request.user.is_authenticated:
+        userid = request.user.id
+        return redirect(f'./{userid}')
+    else:
+        return redirect('login')
 
 
 class ProfileView(DetailView):
