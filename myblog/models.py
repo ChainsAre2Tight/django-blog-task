@@ -42,4 +42,4 @@ class Image(models.Model):
         on_delete=models.CASCADE,
     )
     name = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='/images', default=None)
+    image = models.ImageField(upload_to='images/', default=None)
