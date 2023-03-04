@@ -34,3 +34,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Image(models.Model):
+    author = models.ForeignKey(
+        'auth.user',
+        on_delete=models.CASCADE,
+    )
+    name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='/images', default=None)

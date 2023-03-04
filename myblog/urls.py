@@ -3,6 +3,9 @@ from .views import BlogListView, BlogDetailView, AboutPageView, AboutCategoryVie
     CategoryListView
 from .views import register_request, login_request, logout_view, profile_redirect
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('', BlogListView.as_view(), name='home'),
     path('post/<int:pk>/', BlogDetailView.as_view(), name='post_detail'),
@@ -15,5 +18,8 @@ urlpatterns = [
     path('logout', logout_view, name='logout'),
     path('register', register_request, name='register'),
     path('login', login_request, name='login'),
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
