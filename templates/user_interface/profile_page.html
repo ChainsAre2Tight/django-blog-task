@@ -14,21 +14,30 @@
                 <div class="col">
                     <div class="bg-image card shadow-1-strong"
                          style="background: rgb(131,58,180); background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); margin-right: auto; margin-left: auto; width: 50%">
-                        <div class="card-body text-white">
+                        <div class="card-body text-white" style="padding-bottom: 1%">
                             <p>Логин: {{ user }}</p>
                             <p>Дата последнего входа: {{ user.last_login }}</p>
-                            {% for object in images %}
-                                <div class="position-relative text-center">
-                                    <img src="/media/{{object.image}}" alt="Фото профиля" class="img-responsive"
-                                         style="max-width:100%; max-height:100%;">
+                            <div class="container-fluid" style="padding: 2px; background-color: white">
+                                {% for object in images %}
+                                    <div class="position-relative text-center">
+                                        <img src="/media/{{ object.image }}" alt="Фото профиля" class="img-responsive"
+                                             style="max-width:100%; max-height:100%;">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% if request.user == user %}
+                                <div class="d-flex justify-content-center" style="padding-top: 1%">
+                                    <a href="/upload">
+                                        <button type="button" class="btn btn-primary">Загрузить новое фото</button>
+                                    </a>
                                 </div>
-                            {% endfor %}
+                            {% endif %}
 
-                            <a href="/">
-                                <button type="button" class="btn btn-primary">Вернуться назад</button>
-                            </a>
-
-
+                            <div class="d-flex justify-content-center" style="padding-top: 1%">
+                                <a href="/">
+                                    <button type="button" class="btn btn-primary">Вернуться назад</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
