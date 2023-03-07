@@ -193,6 +193,7 @@ class ProfileView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['active_tab_name'] = 'detailed_post_page'
+        context['images'] = Image.objects.filter(author=self.request.user)
         add_header_to_context(context)
         return context
 

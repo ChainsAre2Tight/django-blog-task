@@ -43,3 +43,6 @@ class Image(models.Model):
     )
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='images/', default=None)
+
+    def __str__(self):
+        return f'{self.name} ({self.author})'

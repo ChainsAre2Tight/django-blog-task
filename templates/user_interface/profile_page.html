@@ -17,15 +17,17 @@
                         <div class="card-body text-white">
                             <p>Логин: {{ user }}</p>
                             <p>Дата последнего входа: {{ user.last_login }}</p>
-                            <div class="position-relative text-center">
-                                <img class="img-responsive" src="{% static 'img/profile-photo.jpg' %}">
-
-                            </div>
+                            {% for object in images %}
+                                <div class="position-relative text-center">
+                                    <img src="/media/{{object.image}}" alt="Фото профиля" class="img-responsive"
+                                         style="max-width:100%; max-height:100%;">
+                                </div>
+                            {% endfor %}
 
                             <a href="/">
                                 <button type="button" class="btn btn-primary">Вернуться назад</button>
                             </a>
-                           
+
 
                         </div>
                     </div>
