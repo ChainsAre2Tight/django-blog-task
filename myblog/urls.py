@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import BlogListView, BlogDetailView, AboutPageView, AboutCategoryView, CategoryView, ProfileView, \
-    CategoryListView
+    CategoryListView, ImageUploadView
 from .views import register_request, login_request, logout_view, profile_redirect
 
 from django.conf import settings
@@ -18,6 +18,8 @@ urlpatterns = [
     path('logout', logout_view, name='logout'),
     path('register', register_request, name='register'),
     path('login', login_request, name='login'),
+    path('upload', ImageUploadView.as_view(), name='upload'),
+
 ]
 
 if settings.DEBUG:

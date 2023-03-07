@@ -1,13 +1,14 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, TemplateView
-from .models import Post, Category
+from django.views.generic import ListView, DetailView, TemplateView, FormView
+from .models import Post, Category, Image
 from django.db.models import Q
-from .forms import NewUserForm
+from .forms import NewUserForm, ImageForm
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 
 from .view_functions import add_header_to_context
 
@@ -155,6 +156,34 @@ def profile_redirect(request):
         return redirect(f'./{userid}')
     else:
         return redirect('login')
+
+
+class ImageUploadView(FormView):
+    form_class = ImageForm
+    template_name = 'user_interface/upload.html'
+    success_url = '/'
+    image = None
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form()
+        if form.is_valid():
+            form.save()
+            image_object = form.instance
+            self.image = image_object
+            print(form.instance.name)
+            return self.form_valid(form)
+        else:
+            print(form.instance)
+            return self.form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(FormView, self).get_context_data(**kwargs)
+        if self.image is not None:
+            context['img'] = self.image
+        else:
+            context['img'] = ''
+        return context
 
 
 class ProfileView(DetailView):
