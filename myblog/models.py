@@ -41,8 +41,16 @@ class Image(models.Model):
         'auth.user',
         on_delete=models.CASCADE,
     )
-    name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='images/', default=None)
 
+    def save(self, *args, **kwargs):
+        Image.objects.filter(author=self.author).delete()
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.image.delete(save=False)
+        super().delete(*args, **kwargs)
+
+
     def __str__(self):
-        return f'{self.name} ({self.author})'
+        return f'{self.image.name} ({self.author})'

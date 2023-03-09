@@ -168,13 +168,13 @@ class ImageUploadView(FormView):
         form_class = self.get_form_class()
         form = self.get_form()
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.author = self.request.user
+            instance.save()
             image_object = form.instance
             self.image = image_object
-            print(form.instance.name)
             return self.form_valid(form)
         else:
-            print(form.instance)
             return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
@@ -193,7 +193,7 @@ class ProfileView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['active_tab_name'] = 'detailed_post_page'
-        context['images'] = Image.objects.filter(author=self.request.user)
+        context['images'] = Image.objects.filter(author_id=self.object.id)
         add_header_to_context(context)
         return context
 

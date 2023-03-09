@@ -24,5 +24,7 @@ class NewUserForm(UserCreationForm):
 class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = '__all__'
+        exclude = ['author']
+
+
 

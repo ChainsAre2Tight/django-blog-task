@@ -18,12 +18,19 @@
                             <p>Логин: {{ user }}</p>
                             <p>Дата последнего входа: {{ user.last_login }}</p>
                             <div class="container-fluid" style="padding: 2px; background-color: white">
-                                {% for object in images %}
-                                    <div class="position-relative text-center">
-                                        <img src="/media/{{ object.image }}" alt="Фото профиля" class="img-responsive"
+                                <div class="position-relative text-center">
+                                    {% if images|length > 0 %}
+                                        {% for object in images %}
+                                            <img src="/media/{{ object.image }}" alt="Фото профиля"
+                                                 class="img-responsive"
+                                                 style="max-width:100%; max-height:100%;">
+                                        {% endfor %}
+                                    {% else %}
+                                        <img src="{% static 'img/profile-photo.jpg' %}" alt="Пустое фото профиля"
+                                             class="img-responsive"
                                              style="max-width:100%; max-height:100%;">
-                                    </div>
-                                {% endfor %}
+                                    {% endif %}
+                                </div>
                             </div>
                             {% if request.user == user %}
                                 <div class="d-flex justify-content-center" style="padding-top: 1%">
