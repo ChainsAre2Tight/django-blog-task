@@ -2,6 +2,14 @@ from django.db import models
 from django.utils.text import slugify
 from transliterate import translit
 from datetime import datetime
+from django.contrib import auth
+
+
+def get_role_name(self) -> str:
+    return 'Пользователь' if not self.is_superuser else 'Администратор'
+
+
+auth.models.User.add_to_class('get_role_name', get_role_name)
 
 
 # Create your models here.
@@ -50,7 +58,6 @@ class Image(models.Model):
     def delete(self, *args, **kwargs):
         self.image.delete(save=False)
         super().delete(*args, **kwargs)
-
 
     def __str__(self):
         return f'{self.image.name} ({self.author})'

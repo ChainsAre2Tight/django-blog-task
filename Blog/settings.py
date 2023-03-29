@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'myblog',
     'crispy_forms',
     'django_cleanup.apps.CleanupConfig',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
@@ -64,10 +65,21 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
 ]
+DJANGO_TABLES2_TABLE_ATTRS = {
+    'class': 'table table-hover',
+    'thead': {
+        'class': 'table-light',
+    },
+    'tbody': {
+        'class': 'table-light',
+    },
+
+}
 
 WSGI_APPLICATION = 'Blog.wsgi.application'
 

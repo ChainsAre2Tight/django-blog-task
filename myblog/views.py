@@ -8,13 +8,17 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django_tables2 import RequestConfig, SingleTableView
 from django.http import HttpResponseRedirect
+from .tables import UserTable
 
 from .view_functions import add_header_to_context
 
 PPP_list = [1, 2, 5, 10]
 default_ppp = 5
 
+
+# TODO recreate context methods using decorators and notations
 
 class BlogDetailView(DetailView):
     model = Post
@@ -224,3 +228,33 @@ class CategoryListView(ListView):
         if self.request.GET.get('ppp') is not None:
             self.request.session['ppp'] = self.request.GET.get('ppp')
         return Category.objects.all()
+
+
+class UserListView(SingleTableView):
+    model = User
+    table_class = UserTable
+    template_name = 'list_pages/user_list_page.html'
+    paginate_by = default_ppp
+
+    def get_context_data(self, **kwargs):
+        context = super(SingleTableView, self).get_context_data(**kwargs)
+        context['active_tab_name'] = 'user_list'
+        add_header_to_context(context)
+        context['ppp_list'] = PPP_list
+        try:
+            context['current_ppp'] = int(self.request.session['ppp'])
+        except KeyError:
+            context['current_ppp'] = default_ppp
+
+        return context
+
+    def get_paginate_by(self, *args, **kwargs):
+        try:
+            return self.request.session['ppp']
+        except KeyError:
+            return super().get_paginate_by(*args, **kwargs)
+
+    def get_queryset(self):
+        if self.request.GET.get('ppp') is not None:
+            self.request.session['ppp'] = self.request.GET.get('ppp')
+        return User.objects.all()
