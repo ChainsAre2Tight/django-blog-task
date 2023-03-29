@@ -18,29 +18,19 @@ PPP_list = [1, 2, 5, 10]
 default_ppp = 5
 
 
-# TODO recreate context methods using decorators and notations
-
-class BlogDetailView(DetailView):
-    model = Post
-    template_name = 'detail_pages/post_detail.html'
-
+class MyView(TemplateView):
     def get_context_data(self, **kwargs):
-        context = super(DetailView, self).get_context_data(**kwargs)
-        context['active_tab_name'] = 'detailed_post_page'
+        context = super(TemplateView).get_context_data(**kwargs)
         add_header_to_context(context)
         return context
 
 
-class BlogListView(ListView):
-    model = Post
-    template_name = 'list_pages/home.html'
-    paginate_by = default_ppp
-
+class PaginatedView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
-        context['active_tab_name'] = 'home_page'
-        add_header_to_context(context)
         context['ppp_list'] = PPP_list
+        add_header_to_context(context)
+        print(123)
         try:
             context['current_ppp'] = int(self.request.session['ppp'])
         except KeyError:
@@ -56,6 +46,31 @@ class BlogListView(ListView):
     def get_queryset(self):
         if self.request.GET.get('ppp') is not None:
             self.request.session['ppp'] = self.request.GET.get('ppp')
+
+
+class BlogDetailView(DetailView):
+    model = Post
+    template_name = 'detail_pages/post_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        context['active_tab_name'] = 'detailed_post_page'
+        add_header_to_context(context)
+        return context
+
+
+class BlogListView(PaginatedView):
+    model = Post
+    template_name = 'list_pages/home.html'
+    paginate_by = default_ppp
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab_name'] = 'home_page'
+        return context
+
+    def get_queryset(self):
+        super(PaginatedView, self).get_queryset()
         if self.request.GET.get('q') is not None:
             query = self.request.GET.get("q")
             objects = Post.objects.filter(
@@ -87,33 +102,19 @@ class AboutCategoryView(DetailView):
         return context
 
 
-class CategoryView(ListView):
+class CategoryView(PaginatedView):
     model = Post
     template_name = 'list_pages/category_page.html'
     paginate_by = default_ppp
 
     def get_queryset(self):
-        if self.request.GET.get('ppp') is not None:
-            self.request.session['ppp'] = self.request.GET.get('ppp')
+        super().get_queryset()
         categories = Category.objects.filter(slug=self.kwargs['slug'])[0]
         return Post.objects.filter(category=categories)
 
-    def get_paginate_by(self, *args, **kwargs):
-        try:
-            return self.request.session['ppp']
-        except KeyError:
-            return super().get_paginate_by(*args, **kwargs)
-
     def get_context_data(self, **kwargs):
-        context = super(ListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['category'] = Category.objects.filter(slug=self.kwargs['slug'])[0]
-        add_header_to_context(context)
-        context['ppp_list'] = PPP_list
-        try:
-            context['current_ppp'] = int(self.request.session['ppp'])
-        except KeyError:
-            context['current_ppp'] = default_ppp
-
         return context
 
 
@@ -202,50 +203,30 @@ class ProfileView(DetailView):
         return context
 
 
-class CategoryListView(ListView):
+class CategoryListView(PaginatedView):
     model = Category
     template_name = 'list_pages/category_list_page.html'
     paginate_by = default_ppp
 
     def get_context_data(self, **kwargs):
-        context = super(ListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['active_tab_name'] = 'category_list'
-        add_header_to_context(context)
-        context['ppp_list'] = PPP_list
-        try:
-            context['current_ppp'] = int(self.request.session['ppp'])
-        except KeyError:
-            context['current_ppp'] = default_ppp
         return context
 
-    def get_paginate_by(self, *args, **kwargs):
-        try:
-            return self.request.session['ppp']
-        except KeyError:
-            return super().get_paginate_by(*args, **kwargs)
-
     def get_queryset(self):
-        if self.request.GET.get('ppp') is not None:
-            self.request.session['ppp'] = self.request.GET.get('ppp')
+        super().get_queryset()
         return Category.objects.all()
 
 
-class UserListView(SingleTableView):
+class UserListView(SingleTableView, PaginatedView):
     model = User
     table_class = UserTable
     template_name = 'list_pages/user_list_page.html'
     paginate_by = default_ppp
 
     def get_context_data(self, **kwargs):
-        context = super(SingleTableView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['active_tab_name'] = 'user_list'
-        add_header_to_context(context)
-        context['ppp_list'] = PPP_list
-        try:
-            context['current_ppp'] = int(self.request.session['ppp'])
-        except KeyError:
-            context['current_ppp'] = default_ppp
-
         return context
 
     def get_paginate_by(self, *args, **kwargs):
@@ -255,6 +236,5 @@ class UserListView(SingleTableView):
             return super().get_paginate_by(*args, **kwargs)
 
     def get_queryset(self):
-        if self.request.GET.get('ppp') is not None:
-            self.request.session['ppp'] = self.request.GET.get('ppp')
+        super().get_queryset()
         return User.objects.all()
